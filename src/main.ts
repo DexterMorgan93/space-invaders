@@ -2,41 +2,45 @@ import { Application, Container, Graphics } from "pixi.js";
 
 export class Player extends Graphics {
   game: Game;
-  playerWidth = 0;
-  playerHeight = 0;
+  widthPlayer: number;
+  heightPlayer: number;
+  xPosPlayer: number;
+  yPosPlayer: number;
   speed: number;
 
   constructor(game: Game) {
     super();
     this.game = game;
-    this.playerWidth = 100;
-    this.playerHeight = 100;
+    this.widthPlayer = 100;
+    this.heightPlayer = 100;
+    this.xPosPlayer = this.game.widthGame * 0.5 - this.widthPlayer * 0.5;
+    this.yPosPlayer = this.game.heightGame - this.heightPlayer;
     this.speed = 20;
   }
 
   draw() {
-    this.rect(0, 0, this.playerWidth, this.playerHeight).fill({
+    this.rect(0, 0, this.widthPlayer, this.heightPlayer).fill({
       color: "black",
       alpha: 1,
     });
+    this.position.set(this.xPosPlayer, this.yPosPlayer);
   }
 }
 
 export class Game extends Container {
   app: Application;
+  widthGame: number;
+  heightGame: number;
   player: Player;
   keys: string[];
 
   constructor(app: Application) {
     super();
     this.app = app;
-    const width = app.screen.width;
-    const height = app.screen.height;
+    this.widthGame = app.screen.width;
+    this.heightGame = app.screen.height;
 
     this.player = new Player(this);
-    const playerPosX = width * 0.5 - this.player.playerWidth * 0.5;
-    const playerPosY = height - this.player.playerHeight;
-    this.player.position.set(playerPosX, playerPosY);
     this.addChild(this.player);
 
     this.keys = [];
@@ -54,18 +58,18 @@ export class Game extends Container {
 
     // horizontal movement
     if (this.keys.indexOf("a") > -1)
-      this.player.position.x -= this.player.speed;
+      this.player.xPosPlayer -= this.player.speed;
     if (this.keys.indexOf("d") > -1)
-      this.player.position.x += this.player.speed;
+      this.player.xPosPlayer += this.player.speed;
 
     // horizontal boundaries
-    if (this.player.position.x < 0) {
-      this.player.position.x = 0;
+    if (this.player.xPosPlayer < 0) {
+      this.player.xPosPlayer = 0;
     } else if (
-      this.player.position.x >
-      this.app.screen.width - this.player.playerWidth
+      this.player.xPosPlayer >
+      this.widthGame - this.player.widthPlayer
     ) {
-      this.player.position.x = this.app.screen.width - this.player.playerWidth;
+      this.player.xPosPlayer = this.widthGame - this.player.widthPlayer;
     }
   }
 }
