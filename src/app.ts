@@ -10,5 +10,8 @@ import { Game } from "./main";
 
   const game = new Game(app);
   app.stage.addChild(game);
-  game.render();
+
+  app.ticker.add(() => {
+    game.render();
+  });
 })();
