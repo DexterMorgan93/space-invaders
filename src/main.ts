@@ -4,8 +4,6 @@ export class Player extends Graphics {
   game: Game;
   widthPlayer: number;
   heightPlayer: number;
-  xPosPlayer: number;
-  yPosPlayer: number;
   speed: number;
 
   constructor(game: Game) {
@@ -13,8 +11,9 @@ export class Player extends Graphics {
     this.game = game;
     this.widthPlayer = 100;
     this.heightPlayer = 100;
-    this.xPosPlayer = this.game.widthGame * 0.5 - this.widthPlayer * 0.5;
-    this.yPosPlayer = this.game.heightGame - this.heightPlayer;
+    const xPosPlayer = this.game.widthGame * 0.5 - this.widthPlayer * 0.5;
+    const yPosPlayer = this.game.heightGame - this.heightPlayer;
+    this.position.set(xPosPlayer, yPosPlayer);
     this.speed = 20;
   }
 
@@ -23,7 +22,6 @@ export class Player extends Graphics {
       color: "black",
       alpha: 1,
     });
-    this.position.set(this.xPosPlayer, this.yPosPlayer);
   }
 }
 
@@ -58,18 +56,18 @@ export class Game extends Container {
 
     // horizontal movement
     if (this.keys.indexOf("a") > -1)
-      this.player.xPosPlayer -= this.player.speed;
+      this.player.position.x -= this.player.speed;
     if (this.keys.indexOf("d") > -1)
-      this.player.xPosPlayer += this.player.speed;
+      this.player.position.x += this.player.speed;
 
     // horizontal boundaries
-    if (this.player.xPosPlayer < 0) {
-      this.player.xPosPlayer = 0;
+    if (this.player.position.x < 0) {
+      this.player.position.x = 0;
     } else if (
-      this.player.xPosPlayer >
+      this.player.position.x >
       this.widthGame - this.player.widthPlayer
     ) {
-      this.player.xPosPlayer = this.widthGame - this.player.widthPlayer;
+      this.player.position.x = this.widthGame - this.player.widthPlayer;
     }
   }
 }
