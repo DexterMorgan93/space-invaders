@@ -70,6 +70,84 @@ export class Projectile extends Graphics {
   }
 }
 
+export class Enemy extends Graphics {
+  game: Game;
+  widthEnemy: number;
+  heightEnemy: number;
+  positionX: number;
+  positionY: number;
+
+  constructor(game: Game, positionX: number, positionY: number) {
+    super();
+    this.game = game;
+    this.widthEnemy = this.game.enemySize;
+    this.heightEnemy = this.game.enemySize;
+    this.positionX = positionX;
+    this.positionY = positionY;
+  }
+
+  draw() {
+    this.rect(0, 0, this.widthEnemy, this.heightEnemy).stroke({ color: "red" });
+  }
+
+  update(waveX: number, waveY: number) {
+    this.x = waveX + this.positionX;
+    this.y = waveY + this.positionY;
+  }
+}
+
+export class Wave extends Container {
+  game: Game;
+  widthWave: number;
+  heightWave: number;
+  speedX: number;
+  speedY: number;
+  enemies: Enemy[];
+
+  constructor(game: Game) {
+    super();
+    this.game = game;
+    this.widthWave = this.game.enemyColumns * this.game.enemySize;
+    this.heightWave = this.game.enemyRows * this.game.enemySize;
+    this.speedX = 3;
+    this.speedY = 0;
+    this.enemies = [];
+    this.create();
+    this.y = -this.heightWave;
+  }
+
+  render() {
+    if (this.y < 0) {
+      this.y += 5;
+    }
+    // сбрасываем при каждом фрейме до нуля, чтобы он опускался медленно
+    this.speedY = 0;
+    if (this.x < 0 || this.x > this.game.widthGame - this.widthWave) {
+      this.speedX *= -1;
+      this.speedY = this.game.enemySize;
+    }
+    this.x += this.speedX;
+    this.y += this.speedY;
+
+    this.enemies.forEach((enemy) => {
+      enemy.update(this.x, this.y);
+      enemy.draw();
+      this.game.addChild(enemy);
+    });
+  }
+
+  create() {
+    for (let y = 0; y < this.game.enemyRows; y++) {
+      for (let x = 0; x < this.game.enemyColumns; x++) {
+        let enemyX = x * this.game.enemySize;
+        let enemyY = y * this.game.enemySize;
+        console.log(enemyX);
+        this.enemies.push(new Enemy(this.game, enemyX, enemyY));
+      }
+    }
+  }
+}
+
 export class Game extends Container {
   app: Application;
   widthGame: number;
@@ -78,6 +156,10 @@ export class Game extends Container {
   keys: string[];
   projectilesPool: Projectile[];
   numberOfProjectiles: number;
+  enemyColumns: number;
+  enemyRows: number;
+  enemySize: number;
+  enemyWave: Wave[];
 
   constructor(app: Application) {
     super();
@@ -87,6 +169,12 @@ export class Game extends Container {
 
     this.player = new Player(this);
     this.addChild(this.player);
+
+    this.enemyColumns = 3;
+    this.enemyRows = 3;
+    this.enemySize = 60;
+    this.enemyWave = [];
+    this.enemyWave.push(new Wave(this));
 
     this.projectilesPool = [];
     this.numberOfProjectiles = 10;
@@ -110,6 +198,11 @@ export class Game extends Container {
       this.addChild(projectile);
       projectile.draw();
       projectile.update();
+    });
+
+    this.enemyWave.forEach((wave) => {
+      wave.render();
+      this.addChild(wave);
     });
 
     // horizontal movement
