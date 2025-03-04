@@ -32,13 +32,15 @@ export class Player extends Graphics {
   }
 }
 export class Projectile extends Graphics {
+  game: Game;
   widthProjectile: number;
   heightProjectile: number;
   speed: number;
   free: boolean;
 
-  constructor() {
+  constructor(game: Game) {
     super();
+    this.game = game;
     this.widthProjectile = 8;
     this.heightProjectile = 40;
     this.speed = 20;
@@ -56,7 +58,11 @@ export class Projectile extends Graphics {
   update() {
     if (!this.free) {
       this.y -= this.speed;
-      if (this.y < -this.heightProjectile) this.reset();
+      if (this.y < -this.heightProjectile) {
+        this.reset();
+        this.game.removeChild(this);
+        this.clear();
+      }
     }
   }
   start(x: number, y: number) {
@@ -67,6 +73,8 @@ export class Projectile extends Graphics {
   }
   reset() {
     this.free = true;
+    this.game.removeChild(this);
+    this.clear();
   }
 }
 
@@ -76,6 +84,7 @@ export class Enemy extends Graphics {
   heightEnemy: number;
   positionX: number;
   positionY: number;
+  markedForDeletion: boolean;
 
   constructor(game: Game, positionX: number, positionY: number) {
     super();
@@ -84,6 +93,7 @@ export class Enemy extends Graphics {
     this.heightEnemy = this.game.enemySize;
     this.positionX = positionX;
     this.positionY = positionY;
+    this.markedForDeletion = false;
   }
 
   draw() {
@@ -93,6 +103,12 @@ export class Enemy extends Graphics {
   update(waveX: number, waveY: number) {
     this.x = waveX + this.positionX;
     this.y = waveY + this.positionY;
+    this.game.projectilesPool.forEach((projectile) => {
+      if (!projectile.free && this.game.checkCollisionAB(this, projectile)) {
+        this.markedForDeletion = true;
+        projectile.reset();
+      }
+    });
   }
 }
 
@@ -134,6 +150,14 @@ export class Wave extends Container {
       enemy.draw();
       this.game.addChild(enemy);
     });
+
+    this.enemies = this.enemies.filter((enemy) => {
+      if (enemy.markedForDeletion) {
+        this.game.removeChild(enemy); // Удаляем врага со сцены
+        return false; // Исключаем из массива
+      }
+      return true; // Оставляем в массиве
+    });
   }
 
   create() {
@@ -141,7 +165,6 @@ export class Wave extends Container {
       for (let x = 0; x < this.game.enemyColumns; x++) {
         let enemyX = x * this.game.enemySize;
         let enemyY = y * this.game.enemySize;
-        console.log(enemyX);
         this.enemies.push(new Enemy(this.game, enemyX, enemyY));
       }
     }
@@ -195,9 +218,9 @@ export class Game extends Container {
     this.player.draw();
 
     this.projectilesPool.forEach((projectile) => {
-      this.addChild(projectile);
       projectile.draw();
       projectile.update();
+      this.addChild(projectile);
     });
 
     this.enemyWave.forEach((wave) => {
@@ -224,7 +247,7 @@ export class Game extends Container {
 
   createProjectiles() {
     for (let i = 0; i < this.numberOfProjectiles; i++) {
-      this.projectilesPool.push(new Projectile());
+      this.projectilesPool.push(new Projectile(this));
     }
   }
   // get free projectile from the pool
@@ -232,5 +255,14 @@ export class Game extends Container {
     for (let i = 0; i < this.projectilesPool.length; i++) {
       if (this.projectilesPool[i].free) return this.projectilesPool[i];
     }
+  }
+
+  checkCollisionAB(a: Enemy, b: Projectile) {
+    return (
+      a.x < b.x + b.width &&
+      a.x + a.width > b.x &&
+      a.y < b.y + b.height &&
+      a.y + a.height > b.y
+    );
   }
 }
