@@ -1,5 +1,6 @@
 import { Application } from "pixi.js";
 import { Game } from "./main";
+import "./style.css";
 
 (async () => {
   const app = new Application();
