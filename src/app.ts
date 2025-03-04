@@ -1,4 +1,4 @@
-import { Application } from "pixi.js";
+import { Application, Assets, Sprite } from "pixi.js";
 import { Game } from "./main";
 import "./style.css";
 
@@ -9,9 +9,30 @@ import "./style.css";
 
   document.body.appendChild(app.canvas);
 
-  const game = new Game(app);
-  app.stage.addChild(game);
+  const manifest = {
+    bundles: [
+      {
+        name: "load-screen",
+        assets: [
+          {
+            alias: "background",
+            src: "./../public/assets/background.png",
+          },
+        ],
+      },
+    ],
+  };
 
+  await Assets.init({ manifest });
+  await Assets.loadBundle([manifest.bundles[0].name]);
+
+  const backgroundTexture = Assets.get(manifest.bundles[0].assets[0].alias);
+  const background = new Sprite(backgroundTexture);
+
+  const game = new Game(app);
+
+  app.stage.addChildAt(background, 0);
+  app.stage.addChild(game);
   app.ticker.add(() => {
     game.render();
   });
