@@ -2,13 +2,19 @@ import { Application, Assets, Sprite } from "pixi.js";
 import { Game } from "./main";
 import "./style.css";
 
+const app = new Application();
+
 (async () => {
-  const app = new Application();
+  await setup();
+  await preload();
+})();
 
+async function setup() {
   await app.init({ background: "#1099bb", width: 600, height: 800 });
-
   document.body.appendChild(app.canvas);
+}
 
+async function preload() {
   const manifest = {
     bundles: [
       {
@@ -36,4 +42,4 @@ import "./style.css";
   app.ticker.add(() => {
     game.render();
   });
-})();
+}
