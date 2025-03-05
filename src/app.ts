@@ -1,12 +1,20 @@
 import { Application, Assets, Sprite } from "pixi.js";
 import { Game } from "./main";
 import "./style.css";
+import { addBackGround } from "./add-background";
 
 const app = new Application();
 
 (async () => {
   await setup();
   await preload();
+
+  const game = new Game(app);
+  app.stage.addChild(game);
+
+  app.ticker.add(() => {
+    game.render();
+  });
 })();
 
 async function setup() {
@@ -32,14 +40,5 @@ async function preload() {
   await Assets.init({ manifest });
   await Assets.loadBundle([manifest.bundles[0].name]);
 
-  const backgroundTexture = Assets.get(manifest.bundles[0].assets[0].alias);
-  const background = new Sprite(backgroundTexture);
-
-  const game = new Game(app);
-
-  app.stage.addChildAt(background, 0);
-  app.stage.addChild(game);
-  app.ticker.add(() => {
-    game.render();
-  });
+  addBackGround(app);
 }
