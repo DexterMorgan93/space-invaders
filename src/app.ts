@@ -1,15 +1,17 @@
-import { Application, Assets, Sprite } from "pixi.js";
+import { Application, Assets } from "pixi.js";
 import { Game } from "./main";
 import "./style.css";
 import { addBackGround } from "./add-background";
+import { AssetsFactory } from "./assets-factory";
 
 const app = new Application();
 
 (async () => {
   await setup();
   await preload();
+  const assets = new AssetsFactory();
 
-  const game = new Game(app);
+  const game = new Game(app, assets);
   app.stage.addChild(game);
 
   app.ticker.add(() => {
@@ -34,11 +36,17 @@ async function preload() {
           },
         ],
       },
+      {
+        name: "beetlemorph",
+        assets: [
+          { alias: "beetlemorph", src: "./../public/assets/beetlemorph.json" },
+        ],
+      },
     ],
   };
 
   await Assets.init({ manifest });
-  await Assets.loadBundle([manifest.bundles[0].name]);
+  await Assets.loadBundle(["load-screen", "beetlemorph"]);
 
   addBackGround(app);
 }

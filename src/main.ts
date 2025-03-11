@@ -3,6 +3,7 @@ import { Player } from "./components/player";
 import { Projectile } from "./components/projectile";
 import { Enemy } from "./components/enemy";
 import { Wave } from "./components/wave";
+import { AssetsFactory } from "./assets-factory";
 
 export class Game extends Container {
   app: Application;
@@ -16,19 +17,23 @@ export class Game extends Container {
   enemyRows: number;
   enemySize: number;
   enemyWave: Wave[];
+  assets: AssetsFactory;
 
-  constructor(app: Application) {
+  constructor(app: Application, assets: AssetsFactory) {
     super();
+
     this.app = app;
     this.widthGame = app.screen.width;
     this.heightGame = app.screen.height;
+
+    this.assets = assets;
 
     this.player = new Player(this);
     this.addChild(this.player);
 
     this.enemyColumns = 3;
     this.enemyRows = 3;
-    this.enemySize = 60;
+    this.enemySize = 80;
     this.enemyWave = [];
     this.enemyWave.push(new Wave(this));
 
