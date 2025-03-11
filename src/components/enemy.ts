@@ -17,11 +17,6 @@ export class Enemy extends Container {
     this.positionX = positionX;
     this.positionY = positionY;
     this.markedForDeletion = false;
-
-    const view = new Graphics();
-    view.rect(0, 0, this.widthEnemy, this.heightEnemy).stroke({ color: "red" });
-
-    this.addChild(view);
   }
 
   update(waveX: number, waveY: number) {

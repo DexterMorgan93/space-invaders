@@ -1,6 +1,6 @@
 {
   "frames": {
-    "1": {
+    "beetlemorph-0-0": {
       "frame": {
         "x": 1,
         "y": 1,
@@ -20,7 +20,7 @@
         "h": 80
       }
     },
-    "10": {
+    "beetlemorph-0-1": {
       "frame": {
         "x": 83,
         "y": 1,
@@ -40,7 +40,7 @@
         "h": 80
       }
     },
-    "11": {
+    "beetlemorph-0-2": {
       "frame": {
         "x": 165,
         "y": 1,
@@ -60,7 +60,127 @@
         "h": 80
       }
     },
-    "12": {
+    "beetlemorph-1-0": {
+      "frame": {
+        "x": 1,
+        "y": 83,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      }
+    },
+    "beetlemorph-1-1": {
+      "frame": {
+        "x": 83,
+        "y": 83,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      }
+    },
+    "beetlemorph-1-2": {
+      "frame": {
+        "x": 165,
+        "y": 83,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      }
+    },
+    "beetlemorph-2-0": {
+      "frame": {
+        "x": 1,
+        "y": 165,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      }
+    },
+    "beetlemorph-2-1": {
+      "frame": {
+        "x": 83,
+        "y": 165,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      }
+    },
+    "beetlemorph-2-2": {
+      "frame": {
+        "x": 165,
+        "y": 165,
+        "w": 80,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 80,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      }
+    },
+    "beetlemorph-3-0": {
       "frame": {
         "x": 247,
         "y": 1,
@@ -80,10 +200,10 @@
         "h": 80
       }
     },
-    "2": {
+    "beetlemorph-3-1": {
       "frame": {
-        "x": 329,
-        "y": 1,
+        "x": 247,
+        "y": 83,
         "w": 80,
         "h": 80
       },
@@ -100,130 +220,10 @@
         "h": 80
       }
     },
-    "3": {
+    "beetlemorph-3-2": {
       "frame": {
-        "x": 411,
-        "y": 1,
-        "w": 80,
-        "h": 80
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 80,
-        "h": 80
-      },
-      "sourceSize": {
-        "w": 80,
-        "h": 80
-      }
-    },
-    "4": {
-      "frame": {
-        "x": 493,
-        "y": 1,
-        "w": 80,
-        "h": 80
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 80,
-        "h": 80
-      },
-      "sourceSize": {
-        "w": 80,
-        "h": 80
-      }
-    },
-    "5": {
-      "frame": {
-        "x": 575,
-        "y": 1,
-        "w": 80,
-        "h": 80
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 80,
-        "h": 80
-      },
-      "sourceSize": {
-        "w": 80,
-        "h": 80
-      }
-    },
-    "6": {
-      "frame": {
-        "x": 657,
-        "y": 1,
-        "w": 80,
-        "h": 80
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 80,
-        "h": 80
-      },
-      "sourceSize": {
-        "w": 80,
-        "h": 80
-      }
-    },
-    "7": {
-      "frame": {
-        "x": 739,
-        "y": 1,
-        "w": 80,
-        "h": 80
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 80,
-        "h": 80
-      },
-      "sourceSize": {
-        "w": 80,
-        "h": 80
-      }
-    },
-    "8": {
-      "frame": {
-        "x": 821,
-        "y": 1,
-        "w": 80,
-        "h": 80
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 80,
-        "h": 80
-      },
-      "sourceSize": {
-        "w": 80,
-        "h": 80
-      }
-    },
-    "9": {
-      "frame": {
-        "x": 903,
-        "y": 1,
+        "x": 247,
+        "y": 165,
         "w": 80,
         "h": 80
       },
@@ -247,8 +247,8 @@
     "image": "beetlemorph.png",
     "format": "RGBA8888",
     "size": {
-      "w": 984,
-      "h": 82
+      "w": 328,
+      "h": 246
     },
     "scale": "1"
   }

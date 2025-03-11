@@ -1,6 +1,7 @@
 import { Container } from "pixi.js";
 import { Game } from "../main";
 import { Beetlemorpgh } from "./beetlemorph";
+import { Enemy } from "./enemy";
 
 export class Wave extends Container {
   game: Game;
@@ -19,6 +20,7 @@ export class Wave extends Container {
     this.speedX = 3;
     this.speedY = 0;
     this.enemies = [];
+
     this.create();
     this.y = -this.heightWave;
   }
@@ -53,9 +55,14 @@ export class Wave extends Container {
   create() {
     for (let y = 0; y < this.game.enemyRows; y++) {
       for (let x = 0; x < this.game.enemyColumns; x++) {
+        const frameY = Math.floor(Math.random() * this.game.enemyRows);
+        // const frameX = Math.floor(Math.random() * game.enemyColumns);
+        const frameX = 0;
         let enemyX = x * this.game.enemySize;
         let enemyY = y * this.game.enemySize;
-        this.enemies.push(new Beetlemorpgh(this.game, enemyX, enemyY));
+        this.enemies.push(
+          new Beetlemorpgh(this.game, enemyX, enemyY, frameY, frameX)
+        );
       }
     }
   }
