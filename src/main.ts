@@ -1,82 +1,6 @@
 import { Application, Container, Graphics } from "pixi.js";
-
-export class Player extends Graphics {
-  game: Game;
-  widthPlayer: number;
-  heightPlayer: number;
-  speed: number;
-
-  constructor(game: Game) {
-    super();
-    this.game = game;
-    this.widthPlayer = 100;
-    this.heightPlayer = 100;
-    const xPosPlayer = this.game.widthGame * 0.5 - this.widthPlayer * 0.5;
-    const yPosPlayer = this.game.heightGame - this.heightPlayer;
-    this.position.set(xPosPlayer, yPosPlayer);
-    this.speed = 20;
-  }
-
-  draw() {
-    this.rect(0, 0, this.widthPlayer, this.heightPlayer).fill({
-      color: "black",
-      alpha: 1,
-    });
-  }
-
-  shoot() {
-    const projectile = this.game.getProjectile();
-    if (projectile) {
-      projectile.start(this.x + this.width * 0.5, this.y);
-    }
-  }
-}
-export class Projectile extends Graphics {
-  game: Game;
-  widthProjectile: number;
-  heightProjectile: number;
-  speed: number;
-  free: boolean;
-
-  constructor(game: Game) {
-    super();
-    this.game = game;
-    this.widthProjectile = 8;
-    this.heightProjectile = 40;
-    this.speed = 20;
-    this.free = true; // sitting in the pool & ready to use
-  }
-
-  draw() {
-    if (!this.free) {
-      this.rect(0, 0, this.widthProjectile, this.heightProjectile).fill({
-        color: "white",
-        alpha: 1,
-      });
-    }
-  }
-  update() {
-    if (!this.free) {
-      this.y -= this.speed;
-      if (this.y < -this.heightProjectile) {
-        this.reset();
-        this.game.removeChild(this);
-        this.clear();
-      }
-    }
-  }
-  start(x: number, y: number) {
-    // object is using & not available right now
-    this.x = x - this.widthProjectile * 0.5;
-    this.y = y;
-    this.free = false;
-  }
-  reset() {
-    this.free = true;
-    this.game.removeChild(this);
-    this.clear();
-  }
-}
+import { Player } from "./components/player";
+import { Projectile } from "./components/projectile";
 
 export class Enemy extends Graphics {
   game: Game;
@@ -215,11 +139,9 @@ export class Game extends Container {
   }
 
   render() {
-    this.player.draw();
-
     this.projectilesPool.forEach((projectile) => {
-      projectile.draw();
       projectile.update();
+
       this.addChild(projectile);
     });
 
