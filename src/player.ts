@@ -6,6 +6,8 @@ export class Player extends DefaultScene {
   private viewWidth = 100;
   private viewHeight = 100;
   private moveSpeed = 5;
+  private direction: -1 | 0 | 1 = 0;
+  private isMoving = false;
 
   constructor() {
     super();
@@ -21,7 +23,21 @@ export class Player extends DefaultScene {
     this.addChild(this.view);
   }
 
+  handleMove(pressed: boolean, left: boolean) {
+    if (pressed) {
+      this.direction = left ? -1 : 1;
+      this.isMoving = true;
+    } else {
+      if ((left && this.direction === -1) || (!left && this.direction === 1)) {
+        this.direction = 0;
+        this.isMoving = false;
+      }
+    }
+  }
+
   handleUpdate(): void {
-    this.position.x += this.moveSpeed;
+    if (this.isMoving) {
+      this.x += this.direction * this.moveSpeed;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Sprite, Ticker, type Texture } from "pixi.js";
+import { Sprite, type Texture } from "pixi.js";
 import { LoaderModal } from "./loader-modal";
 import { DefaultScene, SceneManager } from "./scene-manager";
 import { Player } from "./player";
@@ -22,7 +22,9 @@ export class Game extends DefaultScene {
       SceneManager.app.canvas.height - player.height
     );
     this.player = player;
-    this.addChild(player);
+    this.addChild(this.player);
+
+    this.addEventListeners();
   }
 
   addBackground() {
@@ -30,7 +32,37 @@ export class Game extends DefaultScene {
     this.addChild(backgroundSprite);
   }
 
-  handleUpdate(deltaMS: Ticker): void {
+  addEventListeners() {
+    window.addEventListener("keydown", this.handleKeyDown);
+    window.addEventListener("keyup", this.handleKeyUp);
+  }
+
+  handleKeyDown = (e: KeyboardEvent) => {
+    switch (e.code) {
+      case "KeyA":
+      case "ArrowLeft":
+        this.player.handleMove(true, true);
+        break;
+      case "KeyD":
+      case "ArrowRight":
+        this.player.handleMove(true, false);
+        break;
+    }
+  };
+  handleKeyUp = (e: KeyboardEvent) => {
+    switch (e.code) {
+      case "KeyA":
+      case "ArrowLeft":
+        this.player.handleMove(false, true);
+        break;
+      case "KeyD":
+      case "ArrowRight":
+        this.player.handleMove(false, false);
+        break;
+    }
+  };
+
+  handleUpdate(): void {
     this.player.handleUpdate();
   }
 }
