@@ -15,8 +15,8 @@ export class SceneManager {
   static async initialize(): Promise<void> {
     const app = new Application();
     await app.init({
-      width: 1280,
-      height: 768,
+      width: 600,
+      height: 800,
     });
     document.body.appendChild(app.canvas);
 

@@ -1,7 +1,7 @@
 import { Graphics, Text } from "pixi.js";
 import { DefaultScene, SceneManager } from "./scene-manager";
 import { FancyButton } from "@pixi/ui";
-// import { Game } from "./game";
+import { Game } from "./game";
 
 export class StartModal extends DefaultScene {
   modalBox!: Graphics;
@@ -38,9 +38,9 @@ export class StartModal extends DefaultScene {
 
     this.setup();
 
-    // this.button.onPress.connect(() => {
-    //   SceneManager.changeScene(new Game(SceneManager.app));
-    // });
+    this.button.onPress.connect(() => {
+      SceneManager.changeScene(new Game());
+    });
   }
 
   setup(): void {
