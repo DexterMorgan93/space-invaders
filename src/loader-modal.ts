@@ -13,8 +13,8 @@ export const manifest: AssetsManifest = {
     {
       name: "bundle-1",
       assets: {
-        spritesheet: "spritesheets/spritesheet.json",
-        background: "images/map.png",
+        // spritesheet: "spritesheets/spritesheet.json",
+        background: "images/background.png",
       },
     },
   ],
@@ -114,11 +114,11 @@ export class LoaderModal extends DefaultScene {
   };
 
   getAssets(): {
-    spritesheet: Spritesheet;
+    // spritesheet: Spritesheet;
     backgroundTexture: Texture;
   } {
     return {
-      spritesheet: Assets.get("spritesheet"),
+      // spritesheet: Assets.get("spritesheet"),
       backgroundTexture: Assets.get("background"),
     };
   }
