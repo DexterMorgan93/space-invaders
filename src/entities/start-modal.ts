@@ -1,5 +1,5 @@
 import { Graphics, Text } from "pixi.js";
-import { DefaultScene, SceneManager } from "./scene-manager";
+import { DefaultScene, SceneManager } from "../features/scene-manager";
 import { FancyButton } from "@pixi/ui";
 import { Game } from "./game";
 

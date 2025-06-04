@@ -1,5 +1,5 @@
 import { Graphics } from "pixi.js";
-import { DefaultScene } from "./scene-manager";
+import { DefaultScene } from "../features/scene-manager";
 
 export class Projectile extends DefaultScene {
   private view!: Graphics;

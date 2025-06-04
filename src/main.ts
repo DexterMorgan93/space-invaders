@@ -1,7 +1,7 @@
-import { LoaderModal } from "./loader-modal";
-import { SceneManager } from "./scene-manager";
+import { LoaderModal } from "./features/loader-modal";
+import { SceneManager } from "./features/scene-manager";
 import { delay } from "./shared/lib/delay";
-import { StartModal } from "./start-modal";
+import { StartModal } from "./entities/start-modal";
 
 async function run(): Promise<void> {
   await SceneManager.initialize();

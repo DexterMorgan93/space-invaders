@@ -1,6 +1,6 @@
 import { Container, Sprite, type Texture } from "pixi.js";
-import { LoaderModal } from "./loader-modal";
-import { DefaultScene, SceneManager } from "./scene-manager";
+import { LoaderModal } from "../features/loader-modal";
+import { DefaultScene, SceneManager } from "../features/scene-manager";
 import { Player } from "./player";
 import { Projectile } from "./projectile";
 

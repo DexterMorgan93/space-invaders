@@ -1,5 +1,5 @@
 import { Graphics } from "pixi.js";
-import { DefaultScene, SceneManager } from "./scene-manager";
+import { DefaultScene, SceneManager } from "../features/scene-manager";
 import type { Game } from "./game";
 
 export class Player extends DefaultScene {
