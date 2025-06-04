@@ -3,12 +3,18 @@ import { LoaderModal } from "../features/loader-modal";
 import { DefaultScene, SceneManager } from "../features/scene-manager";
 import { Player } from "./player";
 import { Projectile } from "./projectile";
+import { Wave } from "./wave";
 
 export class Game extends DefaultScene {
   private background: Texture;
   private player: Player;
   private projectilesPool: Container;
   private maxProjectiles = 10;
+  private wave: Container;
+
+  public enemyColumns = 3;
+  public enemyRows = 3;
+  public enemySize = 60;
 
   constructor() {
     super();
@@ -31,6 +37,10 @@ export class Game extends DefaultScene {
     this.addChild(this.projectilesPool);
     this.createProjectiles();
 
+    this.wave = new Container();
+    this.wave.addChild(new Wave(this));
+    this.addChild(this.wave);
+
     this.addEventListeners();
   }
 
@@ -46,6 +56,11 @@ export class Game extends DefaultScene {
       if (projectile.y < -projectile.height) {
         projectile.reset();
       }
+    });
+
+    this.wave.children.forEach((item) => {
+      const wave = item as Wave;
+      wave.handleUpdate();
     });
   }
 
