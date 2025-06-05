@@ -8,10 +8,10 @@ import { Wave } from "./wave";
 export class Game extends DefaultScene {
   private background: Texture;
   private player: Player;
-  private projectilesPool: Container;
   private maxProjectiles = 10;
   private wave: Container;
 
+  public projectilesPool: Container;
   public enemyColumns = 3;
   public enemyRows = 3;
   public enemySize = 60;

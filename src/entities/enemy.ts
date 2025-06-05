@@ -7,6 +7,7 @@ export class Enemy extends DefaultScene {
 
   public enemyWidth: number;
   public enemyHeight: number;
+  public markedForDeletion = false;
 
   constructor(game: Game) {
     super();

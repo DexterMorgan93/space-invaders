@@ -32,9 +32,11 @@ export class Projectile extends DefaultScene {
   start(x: number, y: number) {
     this.position.set(x - this.projectileWidth * 0.5, y);
     this.free = false;
+    this.visible = true;
   }
 
   reset() {
     this.free = true;
+    this.visible = false;
   }
 }

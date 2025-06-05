@@ -2,6 +2,9 @@ import { Container, Graphics } from "pixi.js";
 import { DefaultScene, SceneManager } from "../features/scene-manager";
 import type { Game } from "./game";
 import { Enemy } from "./enemy";
+import type { Projectile } from "./projectile";
+import { Collision } from "../shared/lib/collision";
+import { getObjectBounds } from "../shared/lib/bounds";
 
 export class Wave extends DefaultScene {
   private game: Game;
@@ -51,6 +54,29 @@ export class Wave extends DefaultScene {
 
     this.x += this.speedX;
     this.y += this.speedY;
+
+    // коллизия между врагом и пулей
+    this.enemies.children.forEach((enemy) => {
+      const enemyBounds = getObjectBounds(enemy as Enemy);
+
+      this.game.projectilesPool.children.forEach((item) => {
+        const projectile = item as Projectile;
+        const projectileBounds = getObjectBounds(projectile);
+
+        if (
+          !projectile.free &&
+          Collision.checkCollisionMBxB(enemyBounds, projectileBounds)
+        ) {
+          (enemy as Enemy).markedForDeletion = true;
+          projectile.reset();
+        }
+      });
+    });
+
+    this.enemies.children = this.enemies.children.filter((item) => {
+      const enemy = item as Enemy;
+      return !enemy.markedForDeletion;
+    });
   }
 
   // создаем двумерный массив врагов
