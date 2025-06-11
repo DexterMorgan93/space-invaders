@@ -9,16 +9,16 @@ import { EndGameModal } from "./end-game-modal";
 
 export class Game extends DefaultScene {
   private background: Texture;
-  private player: Player;
   private maxProjectiles = 10;
   private wave: Container;
   private waveCount = 1;
   private endGameModal!: EndGameModal;
 
+  public player: Player;
   public statusBar!: Statusbar;
   public projectilesPool: Container;
   public enemyColumns = 3;
-  public enemyRows = 3;
+  public enemyRows = 11;
   public enemySize = 60;
   public gameOver = false;
 

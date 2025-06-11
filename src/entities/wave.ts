@@ -32,7 +32,7 @@ export class Wave extends DefaultScene {
   }
 
   handleUpdate() {
-    const { statusBar, endGame } = this.game;
+    const { statusBar, endGame, gameOver, player } = this.game;
 
     // типа плавное опускание сверху экрана
     if (this.y < 0) {
@@ -49,11 +49,12 @@ export class Wave extends DefaultScene {
     this.x += this.speedX;
     this.y += this.speedY;
 
-    // коллизия между врагом и пулей
     this.enemies.children.forEach((enemyItem) => {
       const enemy = enemyItem as Enemy;
       const enemyBounds = getObjectBounds(enemy);
+      const playerBounds = getObjectBounds(player);
 
+      // коллизия между врагом и пулей
       this.game.projectilesPool.children.forEach((item) => {
         const projectile = item as Projectile;
         const projectileBounds = getObjectBounds(projectile);
@@ -70,11 +71,24 @@ export class Wave extends DefaultScene {
           enemy.markedForDeletion = true;
         }
       });
+
+      // коллизия между врагом и игроком
+      if (Collision.checkCollisionMBxB(enemyBounds, playerBounds)) {
+        enemy.markedForDeletion = true;
+        player.subtractLives(1);
+
+        if (!gameOver && statusBar.score > 0) {
+          statusBar.subtractScore(1);
+          statusBar.changeLives(player.lives);
+        }
+      }
     });
 
-    this.enemies.children = this.enemies.children.filter((item) => {
-      const enemy = item as Enemy;
-      return !enemy.markedForDeletion;
+    this.enemies.children.forEach((enemyItem) => {
+      const enemy = enemyItem as Enemy;
+      if (enemy.markedForDeletion) {
+        enemy.removeFromParent();
+      }
     });
 
     if (this.y + this.height > SceneManager.app.canvas.height) {

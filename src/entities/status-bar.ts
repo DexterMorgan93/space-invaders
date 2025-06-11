@@ -1,13 +1,17 @@
 import { Container, Text, Graphics } from "pixi.js";
 
 export class Statusbar extends Container {
-  private score = 0;
+  public score = 0;
   private scoreText!: Text;
   private scoreContent!: Text;
 
   private wave = 1;
   private waveText!: Text;
   private waveContent!: Text;
+
+  private lives = 3;
+  private livesGraphics!: Graphics;
+  private livesContainer!: Container;
 
   background!: Graphics;
 
@@ -64,6 +68,14 @@ export class Statusbar extends Container {
       this.waveText.height + 25
     );
     this.addChild(this.waveContent);
+
+    this.livesContainer = new Container();
+    this.addChild(this.livesContainer);
+    for (let i = 0; i < this.lives; i++) {
+      this.livesGraphics = new Graphics();
+      this.livesGraphics.rect(25 + 10 * i, 90, 5, 20).fill({ color: "white" });
+      this.livesContainer.addChild(this.livesGraphics);
+    }
   }
 
   drawBackground() {
@@ -80,9 +92,26 @@ export class Statusbar extends Container {
     this.scoreContent.text = this.score;
   }
 
+  subtractScore(point: number) {
+    this.score -= point;
+    this.scoreContent.text = this.score;
+  }
+
   changeWave(value: number) {
     this.wave = value;
     this.waveContent.text = this.wave;
+  }
+
+  changeLives(value: number) {
+    this.lives -= value;
+
+    console.log("value", value);
+    console.log("this.lives", this.lives);
+
+    for (let i = 0; i < this.lives; i++) {
+      this.livesGraphics.rect(25 + 10 * i, 90, 5, 20).fill({ color: "white" });
+      this.livesContainer.addChild(this.livesGraphics);
+    }
   }
 
   // restart(): void {

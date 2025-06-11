@@ -11,6 +11,8 @@ export class Player extends DefaultScene {
   private direction: -1 | 0 | 1 = 0;
   private isMoving = false;
 
+  public lives = 3;
+
   constructor(game: Game) {
     super();
 
@@ -57,5 +59,9 @@ export class Player extends DefaultScene {
     if (projectile) {
       projectile.start(this.x + this.width * 0.5, this.y);
     }
+  }
+
+  subtractLives(damage: number) {
+    this.lives -= damage;
   }
 }
