@@ -80,9 +80,9 @@ export class Statusbar extends Container {
     this.scoreContent.text = this.score;
   }
 
-  addWave(value: number) {
-    this.wave += value;
-    this.waveText.text = this.wave;
+  changeWave(value: number) {
+    this.wave = value;
+    this.waveContent.text = this.wave;
   }
 
   // restart(): void {

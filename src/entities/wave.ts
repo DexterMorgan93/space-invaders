@@ -10,10 +10,11 @@ export class Wave extends DefaultScene {
   private game: Game;
   private speedX = 3;
   private speedY = 0;
-  private enemies: Container;
 
+  public enemies: Container;
   public waveWidth: number;
   public waveHeight: number;
+  public nextWaveTrigger = false;
 
   constructor(game: Game) {
     super();
@@ -76,8 +77,8 @@ export class Wave extends DefaultScene {
       return !enemy.markedForDeletion;
     });
 
-    // условие проигрыша
     if (this.y + this.height > SceneManager.app.canvas.height) {
+      // условие проигрыша
       endGame();
     }
   }

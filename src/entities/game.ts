@@ -12,6 +12,7 @@ export class Game extends DefaultScene {
   private player: Player;
   private maxProjectiles = 10;
   private wave: Container;
+  private waveCount = 1;
   private endGameModal!: EndGameModal;
 
   public statusBar!: Statusbar;
@@ -68,6 +69,16 @@ export class Game extends DefaultScene {
 
     this.wave.children.forEach((item) => {
       const wave = item as Wave;
+      if (
+        wave.enemies.children.length < 1 &&
+        !wave.nextWaveTrigger &&
+        !this.gameOver
+      ) {
+        this.newWave();
+        this.waveCount++;
+        wave.nextWaveTrigger = true;
+        this.statusBar.changeWave(this.waveCount);
+      }
       wave.handleUpdate();
     });
   }
@@ -88,6 +99,21 @@ export class Game extends DefaultScene {
         return element;
       }
     }
+  }
+
+  newWave() {
+    if (
+      Math.random() < 0.5 &&
+      this.enemyColumns * this.enemySize < SceneManager.app.canvas.width * 0.8
+    ) {
+      this.enemyColumns++;
+    } else if (
+      this.enemyRows * this.enemySize <
+      SceneManager.app.canvas.height * 0.6
+    ) {
+      this.enemyRows++;
+    }
+    this.wave.addChild(new Wave(this));
   }
 
   endGame = () => {
