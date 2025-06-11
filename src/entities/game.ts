@@ -4,17 +4,22 @@ import { DefaultScene, SceneManager } from "../features/scene-manager";
 import { Player } from "./player";
 import { Projectile } from "./projectile";
 import { Wave } from "./wave";
+import { Statusbar } from "./status-bar";
+import { EndGameModal } from "./end-game-modal";
 
 export class Game extends DefaultScene {
   private background: Texture;
   private player: Player;
   private maxProjectiles = 10;
   private wave: Container;
+  private endGameModal!: EndGameModal;
 
+  public statusBar!: Statusbar;
   public projectilesPool: Container;
   public enemyColumns = 3;
   public enemyRows = 3;
   public enemySize = 60;
+  public gameOver = false;
 
   constructor() {
     super();
@@ -40,6 +45,9 @@ export class Game extends DefaultScene {
     this.wave = new Container();
     this.wave.addChild(new Wave(this));
     this.addChild(this.wave);
+
+    this.statusBar = new Statusbar();
+    this.addChild(this.statusBar);
 
     this.addEventListeners();
   }
@@ -81,6 +89,14 @@ export class Game extends DefaultScene {
       }
     }
   }
+
+  endGame = () => {
+    this.gameOver = true;
+    this.endGameModal = new EndGameModal(this);
+    this.addChild(this.endGameModal);
+
+    SceneManager.app.ticker.stop();
+  };
 
   addBackground() {
     const backgroundSprite = new Sprite(this.background);

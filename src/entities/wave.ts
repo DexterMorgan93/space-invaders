@@ -1,4 +1,4 @@
-import { Container, Graphics } from "pixi.js";
+import { Container } from "pixi.js";
 import { DefaultScene, SceneManager } from "../features/scene-manager";
 import type { Game } from "./game";
 import { Enemy } from "./enemy";
@@ -25,21 +25,14 @@ export class Wave extends DefaultScene {
     this.enemies = new Container();
     this.addChild(this.enemies);
 
-    this.draw();
     this.create();
 
     this.position.y = -this.waveHeight;
   }
 
-  draw() {
-    const view = new Graphics();
-    view.rect(0, 0, this.waveWidth, this.waveHeight);
-    view.stroke({ color: "red" });
-
-    this.addChild(view);
-  }
-
   handleUpdate() {
+    const { statusBar, endGame } = this.game;
+
     // типа плавное опускание сверху экрана
     if (this.y < 0) {
       this.y += 5;
@@ -47,7 +40,7 @@ export class Wave extends DefaultScene {
 
     this.speedY = 0;
     // горизонтальные боунды
-    if (this.x < 0 || this.x > SceneManager.app.canvas.width - this.width) {
+    if (this.x < 0 || this.x > SceneManager.app.canvas.width - this.waveWidth) {
       this.speedX *= -1;
       this.speedY = this.game.enemySize;
     }
@@ -56,8 +49,9 @@ export class Wave extends DefaultScene {
     this.y += this.speedY;
 
     // коллизия между врагом и пулей
-    this.enemies.children.forEach((enemy) => {
-      const enemyBounds = getObjectBounds(enemy as Enemy);
+    this.enemies.children.forEach((enemyItem) => {
+      const enemy = enemyItem as Enemy;
+      const enemyBounds = getObjectBounds(enemy);
 
       this.game.projectilesPool.children.forEach((item) => {
         const projectile = item as Projectile;
@@ -69,6 +63,10 @@ export class Wave extends DefaultScene {
         ) {
           (enemy as Enemy).markedForDeletion = true;
           projectile.reset();
+
+          // при попадании добавлять пойнты
+          statusBar.addScore(1);
+          enemy.markedForDeletion = true;
         }
       });
     });
@@ -77,6 +75,11 @@ export class Wave extends DefaultScene {
       const enemy = item as Enemy;
       return !enemy.markedForDeletion;
     });
+
+    // условие проигрыша
+    if (this.y + this.height > SceneManager.app.canvas.height) {
+      endGame();
+    }
   }
 
   // создаем двумерный массив врагов
