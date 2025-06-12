@@ -18,7 +18,7 @@ export class Game extends DefaultScene {
   public statusBar!: Statusbar;
   public projectilesPool: Container;
   public enemyColumns = 3;
-  public enemyRows = 11;
+  public enemyRows = 3;
   public enemySize = 60;
   public gameOver = false;
 
@@ -75,6 +75,7 @@ export class Game extends DefaultScene {
         !this.gameOver
       ) {
         this.newWave();
+        this.player.addLives(1);
         this.waveCount++;
         wave.nextWaveTrigger = true;
         this.statusBar.changeWave(this.waveCount);

@@ -1,7 +1,7 @@
 import { Container } from "pixi.js";
 import { DefaultScene, SceneManager } from "../features/scene-manager";
 import type { Game } from "./game";
-import { Enemy } from "./enemy";
+import { Enemy } from "./enemy/enemy";
 import type { Projectile } from "./projectile";
 import { Collision } from "../shared/lib/collision";
 import { getObjectBounds } from "../shared/lib/bounds";

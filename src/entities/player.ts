@@ -64,4 +64,7 @@ export class Player extends DefaultScene {
   subtractLives(damage: number) {
     this.lives -= damage;
   }
+  addLives(damage: number) {
+    this.lives += damage;
+  }
 }

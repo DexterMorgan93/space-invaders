@@ -1,9 +1,9 @@
 import { Graphics } from "pixi.js";
-import { DefaultScene } from "../features/scene-manager";
-import type { Game } from "./game";
+import { DefaultScene } from "../../features/scene-manager";
+import type { Game } from "../game";
 
 export class Enemy extends DefaultScene {
-  private game: Game;
+  public game: Game;
 
   public enemyWidth: number;
   public enemyHeight: number;
