@@ -17,7 +17,7 @@ export class Projectile extends DefaultScene {
       const tempView = new Graphics();
       tempView
         .rect(0, 0, this.projectileWidth, this.projectileHeight)
-        .fill({ color: "black" });
+        .fill({ color: "white" });
       this.view = tempView;
       this.addChild(this.view);
     }

@@ -5,8 +5,8 @@ import type { Game } from "./game";
 export class Player extends DefaultScene {
   private game: Game;
   private view: Graphics;
-  private viewWidth = 100;
-  private viewHeight = 100;
+  private viewWidth = 140;
+  private viewHeight = 120;
   private moveSpeed = 5;
   private direction: -1 | 0 | 1 = 0;
   private isMoving = false;
