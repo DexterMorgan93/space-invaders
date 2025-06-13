@@ -12,6 +12,7 @@ export class Beetlemorph extends DefaultScene {
     string | number,
     Texture<TextureSource<any>>[]
   >;
+  public isDisabled = false;
 
   public animatedSprite!: AnimatedSprite;
 
@@ -35,5 +36,9 @@ export class Beetlemorph extends DefaultScene {
     );
 
     this.addChild(this.animatedSprite);
+  }
+
+  setDisable() {
+    this.isDisabled = true;
   }
 }

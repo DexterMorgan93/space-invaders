@@ -76,9 +76,9 @@ export class Wave extends DefaultScene {
 
           enemy.animatedSprite.animationSpeed = 0.08;
           enemy.animatedSprite.play();
+          enemy.setDisable();
 
           enemy.animatedSprite.onFrameChange = (currentFrame: number) => {
-            // todo надо сделать врага не интерактивным во время анимации, чтобы пуля могла проходить через них
             if (currentFrame === 0) {
               enemy.markedForDeletion = true;
             }
