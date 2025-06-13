@@ -69,12 +69,20 @@ export class Wave extends DefaultScene {
           !projectile.free &&
           Collision.checkCollisionMBxB(enemyBounds, projectileBounds)
         ) {
-          (enemy as Beetlemorph).markedForDeletion = true;
           projectile.reset();
 
           // при попадании добавлять пойнты
           statusBar.addScore(1);
-          enemy.markedForDeletion = true;
+
+          enemy.animatedSprite.animationSpeed = 0.08;
+          enemy.animatedSprite.play();
+
+          enemy.animatedSprite.onFrameChange = (currentFrame: number) => {
+            // todo надо сделать врага не интерактивным во время анимации, чтобы пуля могла проходить через них
+            if (currentFrame === 0) {
+              enemy.markedForDeletion = true;
+            }
+          };
         }
       });
 

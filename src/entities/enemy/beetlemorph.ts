@@ -13,7 +13,7 @@ export class Beetlemorph extends DefaultScene {
     Texture<TextureSource<any>>[]
   >;
 
-  private animatedSprite!: AnimatedSprite;
+  public animatedSprite!: AnimatedSprite;
 
   constructor(
     game: Game,
@@ -35,8 +35,5 @@ export class Beetlemorph extends DefaultScene {
     );
 
     this.addChild(this.animatedSprite);
-
-    this.animatedSprite.animationSpeed = 0.01;
-    this.animatedSprite.stop();
   }
 }
