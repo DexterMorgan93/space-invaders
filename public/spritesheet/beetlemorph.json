@@ -242,15 +242,15 @@
     }
   },
   "animations": {
-    "first": ["00.png", "01.png", "02.png"],
-    "second": ["03.png", "04.png", "05.png"],
-    "third": ["06.png", "07.png", "08.png"],
-    "fourth": ["09.png", "10.png", "11.png"]
+    "1": ["00.png", "01.png", "02.png"],
+    "2": ["03.png", "04.png", "05.png"],
+    "3": ["06.png", "07.png", "08.png"],
+    "4": ["09.png", "10.png", "11.png"]
   },
   "meta": {
     "app": "http://www.codeandweb.com/texturepacker",
     "version": "1.0",
-    "image": "spritesheet.png",
+    "image": "beetlemorph.png",
     "format": "RGBA8888",
     "size": {
       "w": 328,

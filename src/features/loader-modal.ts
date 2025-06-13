@@ -13,7 +13,7 @@ export const manifest: AssetsManifest = {
     {
       name: "bundle-1",
       assets: {
-        // spritesheet: "spritesheets/spritesheet.json",
+        beetlemorph: "spritesheet/beetlemorph.json",
         background: "images/background.png",
       },
     },
@@ -114,11 +114,11 @@ export class LoaderModal extends DefaultScene {
   };
 
   getAssets(): {
-    // spritesheet: Spritesheet;
+    beetlemorph: Spritesheet;
     backgroundTexture: Texture;
   } {
     return {
-      // spritesheet: Assets.get("spritesheet"),
+      beetlemorph: Assets.get("beetlemorph"),
       backgroundTexture: Assets.get("background"),
     };
   }

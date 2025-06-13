@@ -1,10 +1,10 @@
-import { Container } from "pixi.js";
+import { Container, Spritesheet, Texture, TextureSource } from "pixi.js";
 import { DefaultScene, SceneManager } from "../features/scene-manager";
 import type { Game } from "./game";
-import { Enemy } from "./enemy/enemy";
 import type { Projectile } from "./projectile";
 import { Collision } from "../shared/lib/collision";
 import { getObjectBounds } from "../shared/lib/bounds";
+import { Beetlemorph } from "./enemy/beetlemorph";
 
 export class Wave extends DefaultScene {
   private game: Game;
@@ -15,11 +15,17 @@ export class Wave extends DefaultScene {
   public waveWidth: number;
   public waveHeight: number;
   public nextWaveTrigger = false;
+  public beetleMorphAnimations!: Record<
+    string | number,
+    Texture<TextureSource<any>>[]
+  >;
 
-  constructor(game: Game) {
+  constructor(game: Game, beetleMorph: Spritesheet) {
     super();
 
     this.game = game;
+    const { animations } = beetleMorph;
+    this.beetleMorphAnimations = animations;
     this.waveWidth = game.enemyColumns * game.enemySize;
     this.waveHeight = game.enemyRows * game.enemySize;
 
@@ -50,7 +56,7 @@ export class Wave extends DefaultScene {
     this.y += this.speedY;
 
     this.enemies.children.forEach((enemyItem) => {
-      const enemy = enemyItem as Enemy;
+      const enemy = enemyItem as Beetlemorph;
       const enemyBounds = getObjectBounds(enemy);
       const playerBounds = getObjectBounds(player);
 
@@ -63,7 +69,7 @@ export class Wave extends DefaultScene {
           !projectile.free &&
           Collision.checkCollisionMBxB(enemyBounds, projectileBounds)
         ) {
-          (enemy as Enemy).markedForDeletion = true;
+          (enemy as Beetlemorph).markedForDeletion = true;
           projectile.reset();
 
           // при попадании добавлять пойнты
@@ -85,7 +91,7 @@ export class Wave extends DefaultScene {
     });
 
     this.enemies.children.forEach((enemyItem) => {
-      const enemy = enemyItem as Enemy;
+      const enemy = enemyItem as Beetlemorph;
       if (enemy.markedForDeletion) {
         enemy.removeFromParent();
       }
@@ -103,8 +109,13 @@ export class Wave extends DefaultScene {
       for (let x = 0; x < this.game.enemyColumns; x++) {
         const enemyX = x * this.game.enemySize;
         const enemyY = y * this.game.enemySize;
+        const randomKey = String(Math.floor(Math.random() * 4 + 1));
 
-        const enemy = new Enemy(this.game);
+        const enemy = new Beetlemorph(
+          this.game,
+          randomKey,
+          this.beetleMorphAnimations
+        );
         enemy.position.set(enemyX, enemyY);
         this.enemies.addChild(enemy);
       }

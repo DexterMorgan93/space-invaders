@@ -1,4 +1,4 @@
-import { Container, Sprite, type Texture } from "pixi.js";
+import { Container, Sprite, Spritesheet, type Texture } from "pixi.js";
 import { LoaderModal } from "../features/loader-modal";
 import { DefaultScene, SceneManager } from "../features/scene-manager";
 import { Player } from "./player";
@@ -19,14 +19,16 @@ export class Game extends DefaultScene {
   public projectilesPool: Container;
   public enemyColumns = 3;
   public enemyRows = 3;
-  public enemySize = 60;
+  public enemySize = 80;
   public gameOver = false;
+  public beetlemorph!: Spritesheet;
 
   constructor() {
     super();
 
     const loaderModal = new LoaderModal();
-    const { backgroundTexture } = loaderModal.getAssets();
+    const { backgroundTexture, beetlemorph } = loaderModal.getAssets();
+    this.beetlemorph = beetlemorph;
 
     this.background = backgroundTexture;
     this.addBackground();
@@ -44,7 +46,7 @@ export class Game extends DefaultScene {
     this.createProjectiles();
 
     this.wave = new Container();
-    this.wave.addChild(new Wave(this));
+    this.wave.addChild(new Wave(this, this.beetlemorph));
     this.addChild(this.wave);
 
     this.statusBar = new Statusbar();
@@ -114,7 +116,7 @@ export class Game extends DefaultScene {
     ) {
       this.enemyRows++;
     }
-    this.wave.addChild(new Wave(this));
+    this.wave.addChild(new Wave(this, this.beetlemorph));
   }
 
   endGame = () => {
