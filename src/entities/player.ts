@@ -9,25 +9,44 @@ export class Player extends DefaultScene {
   private moveSpeed = 5;
   private direction: -1 | 0 | 1 = 0;
   private isMoving = false;
-  private textures!: Spritesheet;
+  private playerTextures!: Spritesheet;
+  private playerJetsTextures!: Spritesheet;
   public sprite: Sprite;
+  public spriteJets: Sprite;
 
   public lives = 3;
 
-  constructor(game: Game, playerTextures: Spritesheet) {
+  constructor(
+    game: Game,
+    playerTextures: Spritesheet,
+    playerJetsTextures: Spritesheet
+  ) {
     super();
 
     this.game = game;
-    this.textures = playerTextures;
-    this.sprite = new Sprite(playerTextures.textures["0.png"]);
+    this.playerTextures = playerTextures;
+    this.playerJetsTextures = playerJetsTextures;
+
+    this.sprite = new Sprite(this.playerTextures.textures["0.png"]);
     this.sprite.setSize(this.viewWidth, this.viewHeight);
     this.addChild(this.sprite);
+
+    this.spriteJets = new Sprite(this.playerJetsTextures.textures["1.png"]);
+    this.spriteJets.setSize(this.viewWidth, this.viewHeight);
+    this.addChild(this.spriteJets);
   }
 
   handleMove(pressed: boolean, left: boolean) {
     if (pressed) {
       this.direction = left ? -1 : 1;
       this.isMoving = true;
+      // if (this.direction === -1) {
+      //   this.spriteJets = new Sprite(this.playerJetsTextures.textures["0.png"]);
+      // } else if (this.direction === 1) {
+      //   this.spriteJets = new Sprite(this.playerJetsTextures.textures["2.png"]);
+      // } else {
+      //   this.spriteJets = new Sprite(this.playerJetsTextures.textures["1.png"]);
+      // }
     } else {
       if ((left && this.direction === -1) || (!left && this.direction === 1)) {
         this.direction = 0;

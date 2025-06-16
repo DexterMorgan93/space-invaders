@@ -16,6 +16,7 @@ export class Game extends DefaultScene {
 
   public player: Player;
   private playerTextures!: Spritesheet;
+  private playerJetsTextures!: Spritesheet;
   public statusBar!: Statusbar;
   public projectilesPool: Container;
   public enemyColumns = 3;
@@ -32,14 +33,22 @@ export class Game extends DefaultScene {
       backgroundTexture,
       beetlemorph,
       player: playerTextures,
+      playerJets,
     } = loaderModal.getAssets();
     this.beetlemorph = beetlemorph;
     this.playerTextures = playerTextures;
 
+    console.log(playerJets);
+    this.playerJetsTextures = playerJets;
+
     this.background = backgroundTexture;
     this.addBackground();
 
-    const player = new Player(this, playerTextures);
+    const player = new Player(
+      this,
+      this.playerTextures,
+      this.playerJetsTextures
+    );
     player.position.set(
       SceneManager.app.canvas.width * 0.5 - player.width * 0.5,
       SceneManager.app.canvas.height - player.height
@@ -148,10 +157,14 @@ export class Game extends DefaultScene {
       case "KeyA":
       case "ArrowLeft":
         this.player.handleMove(true, true);
+        this.player.spriteJets.texture =
+          this.playerJetsTextures.textures["0.png"];
         break;
       case "KeyD":
       case "ArrowRight":
         this.player.handleMove(true, false);
+        this.player.spriteJets.texture =
+          this.playerJetsTextures.textures["2.png"];
         break;
       case "Numpad1":
         this.player.shoot();
@@ -164,10 +177,14 @@ export class Game extends DefaultScene {
       case "KeyA":
       case "ArrowLeft":
         this.player.handleMove(false, true);
+        this.player.spriteJets.texture =
+          this.playerJetsTextures.textures["1.png"];
         break;
       case "KeyD":
       case "ArrowRight":
         this.player.handleMove(false, false);
+        this.player.spriteJets.texture =
+          this.playerJetsTextures.textures["1.png"];
         break;
       case "Numpad1":
         this.player.sprite.texture = this.playerTextures.textures["0.png"];
