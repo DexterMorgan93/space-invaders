@@ -15,6 +15,7 @@ export class Game extends DefaultScene {
   private endGameModal!: EndGameModal;
 
   public player: Player;
+  private playerTextures!: Spritesheet;
   public statusBar!: Statusbar;
   public projectilesPool: Container;
   public enemyColumns = 3;
@@ -27,13 +28,18 @@ export class Game extends DefaultScene {
     super();
 
     const loaderModal = new LoaderModal();
-    const { backgroundTexture, beetlemorph } = loaderModal.getAssets();
+    const {
+      backgroundTexture,
+      beetlemorph,
+      player: playerTextures,
+    } = loaderModal.getAssets();
     this.beetlemorph = beetlemorph;
+    this.playerTextures = playerTextures;
 
     this.background = backgroundTexture;
     this.addBackground();
 
-    const player = new Player(this);
+    const player = new Player(this, playerTextures);
     player.position.set(
       SceneManager.app.canvas.width * 0.5 - player.width * 0.5,
       SceneManager.app.canvas.height - player.height
@@ -149,6 +155,7 @@ export class Game extends DefaultScene {
         break;
       case "Numpad1":
         this.player.shoot();
+        this.player.sprite.texture = this.playerTextures.textures["1.png"];
         break;
     }
   };
@@ -161,6 +168,9 @@ export class Game extends DefaultScene {
       case "KeyD":
       case "ArrowRight":
         this.player.handleMove(false, false);
+        break;
+      case "Numpad1":
+        this.player.sprite.texture = this.playerTextures.textures["0.png"];
         break;
     }
   };

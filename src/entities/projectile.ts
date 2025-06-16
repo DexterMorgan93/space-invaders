@@ -3,7 +3,7 @@ import { DefaultScene } from "../features/scene-manager";
 
 export class Projectile extends DefaultScene {
   private view!: Graphics;
-  private projectileWidth = 8;
+  private projectileWidth = 3;
   private projectileHeight = 40;
   private projectileSpeed = 20;
   public free = true;
@@ -17,13 +17,15 @@ export class Projectile extends DefaultScene {
       const tempView = new Graphics();
       tempView
         .rect(0, 0, this.projectileWidth, this.projectileHeight)
-        .fill({ color: "white" });
+        .fill({ color: "gold" });
+      tempView.position.y = -15;
       this.view = tempView;
       this.addChild(this.view);
     }
   }
 
   handleUpdate() {
+    1;
     if (!this.free) {
       this.y -= this.projectileSpeed;
     }
