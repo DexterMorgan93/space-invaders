@@ -6,6 +6,7 @@ import { Projectile } from "./projectile";
 import { Wave } from "./wave";
 import { Statusbar } from "./status-bar";
 import { EndGameModal } from "./end-game-modal";
+import { getObjectBounds } from "../shared/lib/bounds";
 
 export class Game extends DefaultScene {
   private background: Texture;
@@ -71,7 +72,24 @@ export class Game extends DefaultScene {
   }
 
   handleUpdate(): void {
+    const { position, velocity } = this.player;
+    const playerBounds = getObjectBounds(this.player);
+
     this.player.handleUpdate();
+    // TODO останавливать при выходе игрока наполовину
+    if (playerBounds.x + velocity.vx < -playerBounds.width * 0.5) {
+      velocity.vx = 0;
+      position.x = -playerBounds.width * 0.5;
+    } else if (
+      playerBounds.x + velocity.vx >
+      SceneManager.app.canvas.width - playerBounds.width * 0.5
+    ) {
+      velocity.vx = 0;
+      position.x = SceneManager.app.canvas.width - playerBounds.width * 0.5;
+    } else {
+      position.x += velocity.vx;
+    }
+    this.player.updateState();
 
     this.projectilesPool.children.forEach((item) => {
       const projectile = item as Projectile;
@@ -156,15 +174,11 @@ export class Game extends DefaultScene {
     switch (e.code) {
       case "KeyA":
       case "ArrowLeft":
-        this.player.handleMove(true, true);
-        this.player.spriteJets.texture =
-          this.playerJetsTextures.textures["0.png"];
+        this.player.applyLeftDirection(true);
         break;
       case "KeyD":
       case "ArrowRight":
-        this.player.handleMove(true, false);
-        this.player.spriteJets.texture =
-          this.playerJetsTextures.textures["2.png"];
+        this.player.applyRightDirection(true);
         break;
       case "Numpad1":
         this.player.shoot();
@@ -176,15 +190,11 @@ export class Game extends DefaultScene {
     switch (e.code) {
       case "KeyA":
       case "ArrowLeft":
-        this.player.handleMove(false, true);
-        this.player.spriteJets.texture =
-          this.playerJetsTextures.textures["1.png"];
+        this.player.applyLeftDirection(false);
         break;
       case "KeyD":
       case "ArrowRight":
-        this.player.handleMove(false, false);
-        this.player.spriteJets.texture =
-          this.playerJetsTextures.textures["1.png"];
+        this.player.applyRightDirection(false);
         break;
       case "Numpad1":
         this.player.sprite.texture = this.playerTextures.textures["0.png"];
