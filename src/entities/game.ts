@@ -39,7 +39,6 @@ export class Game extends DefaultScene {
     this.beetlemorph = beetlemorph;
     this.playerTextures = playerTextures;
 
-    console.log(playerJets);
     this.playerJetsTextures = playerJets;
 
     this.background = backgroundTexture;
@@ -72,10 +71,13 @@ export class Game extends DefaultScene {
   }
 
   handleUpdate(): void {
+    this.player.handleUpdate();
     const { position, velocity } = this.player;
     const playerBounds = getObjectBounds(this.player);
 
-    this.player.handleUpdate();
+    if (velocity.vy > 0) {
+      this.player.shoot();
+    }
     // TODO останавливать при выходе игрока наполовину
     if (playerBounds.x + velocity.vx < -playerBounds.width * 0.5) {
       velocity.vx = 0;
@@ -181,8 +183,8 @@ export class Game extends DefaultScene {
         this.player.applyRightDirection(true);
         break;
       case "Numpad1":
-        this.player.shoot();
-        this.player.sprite.texture = this.playerTextures.textures["1.png"];
+      case "Space":
+        this.player.applyShoot(true);
         break;
     }
   };
@@ -197,7 +199,8 @@ export class Game extends DefaultScene {
         this.player.applyRightDirection(false);
         break;
       case "Numpad1":
-        this.player.sprite.texture = this.playerTextures.textures["0.png"];
+      case "Space":
+        this.player.applyShoot(false);
         break;
     }
   };
