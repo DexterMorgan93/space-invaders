@@ -16,8 +16,10 @@ export class Game extends DefaultScene {
   private endGameModal!: EndGameModal;
 
   public player: Player;
+  public playerLifes = 3;
   private playerTextures!: Spritesheet;
   private playerJetsTextures!: Spritesheet;
+
   public statusBar!: Statusbar;
   public projectilesPool: Container;
   public enemyColumns = 3;
@@ -112,10 +114,10 @@ export class Game extends DefaultScene {
         !this.gameOver
       ) {
         this.newWave();
-        this.player.addLives(1);
         this.waveCount++;
         wave.nextWaveTrigger = true;
         this.statusBar.changeWave(this.waveCount);
+        this.statusBar.addLives(1);
       }
       wave.handleUpdate();
     });

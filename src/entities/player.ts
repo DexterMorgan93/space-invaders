@@ -19,8 +19,6 @@ export class Player extends DefaultScene {
     vy: 0,
   };
 
-  public lives = 3;
-
   constructor(
     game: Game,
     playerTextures: Spritesheet,
@@ -95,12 +93,5 @@ export class Player extends DefaultScene {
     } else {
       this.velocity.vx = 0;
     }
-  }
-
-  subtractLives(damage: number) {
-    this.lives -= damage;
-  }
-  addLives(damage: number) {
-    this.lives += damage;
   }
 }

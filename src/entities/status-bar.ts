@@ -10,8 +10,8 @@ export class Statusbar extends Container {
   private waveContent!: Text;
 
   private lives = 3;
-  private livesGraphics!: Graphics;
-  private livesContainer!: Container;
+  private livesText!: Text;
+  private livesContent!: Text;
 
   background!: Graphics;
 
@@ -69,13 +69,30 @@ export class Statusbar extends Container {
     );
     this.addChild(this.waveContent);
 
-    this.livesContainer = new Container();
-    this.addChild(this.livesContainer);
-    for (let i = 0; i < this.lives; i++) {
-      this.livesGraphics = new Graphics();
-      this.livesGraphics.rect(25 + 10 * i, 90, 5, 20).fill({ color: "white" });
-      this.livesContainer.addChild(this.livesGraphics);
-    }
+    this.livesText = new Text({
+      text: "Lives:",
+      style: {
+        fontSize: 24,
+        fill: "white",
+        stroke: 2,
+      },
+    });
+    this.livesText.position.set(20, this.livesText.height + 55);
+    this.addChild(this.livesText);
+
+    this.livesContent = new Text({
+      text: String(this.lives),
+      style: {
+        fontSize: 24,
+        fill: "white",
+        stroke: 2,
+      },
+    });
+    this.livesContent.position.set(
+      this.livesText.width + 25,
+      this.livesText.height + 55
+    );
+    this.addChild(this.livesContent);
   }
 
   drawBackground() {
@@ -102,16 +119,13 @@ export class Statusbar extends Container {
     this.waveContent.text = this.wave;
   }
 
-  changeLives(value: number) {
+  subtractLives(value: number) {
     this.lives -= value;
-
-    console.log("value", value);
-    console.log("this.lives", this.lives);
-
-    for (let i = 0; i < this.lives; i++) {
-      this.livesGraphics.rect(25 + 10 * i, 90, 5, 20).fill({ color: "white" });
-      this.livesContainer.addChild(this.livesGraphics);
-    }
+    this.livesContent.text = this.lives;
+  }
+  addLives(value: number) {
+    this.lives += value;
+    this.livesContent.text = this.lives;
   }
 
   // restart(): void {

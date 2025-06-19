@@ -89,11 +89,10 @@ export class Wave extends DefaultScene {
       // коллизия между врагом и игроком
       if (Collision.checkCollisionMBxB(enemyBounds, playerBounds)) {
         enemy.markedForDeletion = true;
-        player.subtractLives(1);
 
         if (!gameOver && statusBar.score > 0) {
           statusBar.subtractScore(1);
-          statusBar.changeLives(player.lives);
+          statusBar.subtractLives(1);
         }
       }
     });
