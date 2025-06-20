@@ -38,7 +38,7 @@ export class Wave extends DefaultScene {
   }
 
   handleUpdate() {
-    const { statusBar, endGame, gameOver, player } = this.game;
+    const { statusBar, gameOver, player } = this.game;
 
     // типа плавное опускание сверху экрана
     if (this.y < 0) {
@@ -103,11 +103,6 @@ export class Wave extends DefaultScene {
         enemy.removeFromParent();
       }
     });
-
-    if (this.y + this.height > SceneManager.app.canvas.height) {
-      // условие проигрыша
-      endGame();
-    }
   }
 
   // создаем двумерный массив врагов

@@ -121,6 +121,11 @@ export class Game extends DefaultScene {
       }
       wave.handleUpdate();
     });
+
+    if (this.wave.y + this.wave.height > SceneManager.app.canvas.height) {
+      // условие проигрыша
+      this.endGame();
+    }
   }
 
   // создаем сразу же фиксированное количество пуль. Object pool pattenr design
