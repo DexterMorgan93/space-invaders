@@ -37,10 +37,6 @@ export class EndGameModal extends Container {
     this.game = game;
 
     this.setup();
-
-    // this.button.onPress.connect(() => {
-    //   game.restartGame();
-    // });
   }
 
   setup(): void {

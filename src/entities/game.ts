@@ -7,11 +7,13 @@ import { Wave } from "./wave";
 import { Statusbar } from "./status-bar";
 import { EndGameModal } from "./end-game-modal";
 import { getObjectBounds } from "../shared/lib/bounds";
+import { Beetlemorph } from "./enemy/beetlemorph";
+import { Collision } from "../shared/lib/collision";
 
 export class Game extends DefaultScene {
   private background: Texture;
   private maxProjectiles = 10;
-  private wave: Container;
+  private wave: Wave;
   private waveCount = 1;
   private endGameModal!: EndGameModal;
 
@@ -59,12 +61,13 @@ export class Game extends DefaultScene {
     this.addChild(this.player);
 
     this.projectilesPool = new Container();
+    this.projectilesPool.label = "ProjectilesPool";
     this.addChild(this.projectilesPool);
     this.createProjectiles();
 
-    this.wave = new Container();
-    this.wave.addChild(new Wave(this, this.beetlemorph));
+    this.wave = new Wave(this, this.beetlemorph);
     this.addChild(this.wave);
+    this.createFirstWave();
 
     this.statusBar = new Statusbar();
     this.addChild(this.statusBar);
@@ -74,6 +77,7 @@ export class Game extends DefaultScene {
 
   handleUpdate(): void {
     this.player.handleUpdate();
+    this.wave.update();
     const { position, velocity } = this.player;
     const playerBounds = getObjectBounds(this.player);
 
@@ -109,7 +113,7 @@ export class Game extends DefaultScene {
     this.wave.children.forEach((item) => {
       const wave = item as Wave;
       if (
-        wave.enemies.children.length < 1 &&
+        this.wave.children.length < 1 &&
         !wave.nextWaveTrigger &&
         !this.gameOver
       ) {
@@ -119,12 +123,79 @@ export class Game extends DefaultScene {
         this.statusBar.changeWave(this.waveCount);
         this.statusBar.addLives(1);
       }
-      wave.handleUpdate();
+    });
+
+    this.wave.children.forEach((enemyItem) => {
+      const enemy = enemyItem as Beetlemorph;
+      const enemyBounds = getObjectBounds(enemy);
+      const playerBounds = getObjectBounds(this.player);
+
+      // коллизия между врагом и пулей
+      this.projectilesPool.children.forEach((item) => {
+        const projectile = item as Projectile;
+        const projectileBounds = getObjectBounds(projectile);
+
+        if (
+          !projectile.free &&
+          Collision.checkCollisionMBxB(enemyBounds, projectileBounds)
+        ) {
+          projectile.reset();
+
+          // при попадании добавлять пойнты
+          this.statusBar.addScore(1);
+
+          enemy.animatedSprite.animationSpeed = 0.08;
+          enemy.animatedSprite.play();
+          enemy.setDisable();
+
+          enemy.animatedSprite.onFrameChange = (currentFrame: number) => {
+            if (currentFrame === 0) {
+              enemy.markedForDeletion = true;
+            }
+          };
+        }
+      });
+
+      // коллизия между врагом и игроком
+      if (Collision.checkCollisionMBxB(enemyBounds, playerBounds)) {
+        enemy.markedForDeletion = true;
+
+        if (!this.gameOver && this.statusBar.score > 0) {
+          this.statusBar.subtractScore(1);
+          this.statusBar.subtractLives(1);
+        }
+      }
+    });
+
+    this.wave.children.forEach((enemyItem) => {
+      const enemy = enemyItem as Beetlemorph;
+      if (enemy.markedForDeletion) {
+        enemy.removeFromParent();
+      }
     });
 
     if (this.wave.y + this.wave.height > SceneManager.app.canvas.height) {
       // условие проигрыша
       this.endGame();
+    }
+  }
+
+  // создаем двумерный массив врагов
+  createFirstWave() {
+    for (let y = 0; y < this.enemyRows; y++) {
+      for (let x = 0; x < this.enemyColumns; x++) {
+        const enemyX = x * this.enemySize;
+        const enemyY = y * this.enemySize;
+        const randomKey = String(Math.floor(Math.random() * 4 + 1));
+
+        const enemy = new Beetlemorph(
+          this,
+          randomKey,
+          this.beetlemorph.animations
+        );
+        enemy.position.set(enemyX, enemyY);
+        this.wave.addChild(enemy);
+      }
     }
   }
 
