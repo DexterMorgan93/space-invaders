@@ -13,7 +13,7 @@ import { Collision } from "../shared/lib/collision";
 export class Game extends DefaultScene {
   private background: Texture;
   private maxProjectiles = 10;
-  private wave: Wave;
+  private wave!: Wave;
   private waveCount = 1;
   private endGameModal!: EndGameModal;
 
@@ -65,9 +65,7 @@ export class Game extends DefaultScene {
     this.addChild(this.projectilesPool);
     this.createProjectiles();
 
-    this.wave = new Wave(this, this.beetlemorph);
-    this.addChild(this.wave);
-    this.createFirstWave();
+    this.createWave();
 
     this.statusBar = new Statusbar();
     this.addChild(this.statusBar);
@@ -110,20 +108,26 @@ export class Game extends DefaultScene {
       }
     });
 
-    this.wave.children.forEach((item) => {
-      const wave = item as Wave;
+    if (this.wave.children.length < 1 && !this.gameOver) {
+      this.wave.removeFromParent();
+      this.createWave();
+      this.waveCount++;
+      this.wave.nextWaveTrigger = true;
+      this.statusBar.changeWave(this.waveCount);
+      this.statusBar.addLives(1);
+
       if (
-        this.wave.children.length < 1 &&
-        !wave.nextWaveTrigger &&
-        !this.gameOver
+        Math.random() < 0.5 &&
+        this.enemyColumns * this.enemySize < SceneManager.app.canvas.width * 0.8
       ) {
-        this.newWave();
-        this.waveCount++;
-        wave.nextWaveTrigger = true;
-        this.statusBar.changeWave(this.waveCount);
-        this.statusBar.addLives(1);
+        this.enemyColumns++;
+      } else if (
+        this.enemyRows * this.enemySize <
+        SceneManager.app.canvas.height * 0.6
+      ) {
+        this.enemyRows++;
       }
-    });
+    }
 
     this.wave.children.forEach((enemyItem) => {
       const enemy = enemyItem as Beetlemorph;
@@ -152,6 +156,7 @@ export class Game extends DefaultScene {
             if (currentFrame === 0) {
               enemy.markedForDeletion = true;
             }
+            enemy.angle = 0.5;
           };
         }
       });
@@ -165,10 +170,7 @@ export class Game extends DefaultScene {
           this.statusBar.subtractLives(1);
         }
       }
-    });
 
-    this.wave.children.forEach((enemyItem) => {
-      const enemy = enemyItem as Beetlemorph;
       if (enemy.markedForDeletion) {
         enemy.removeFromParent();
       }
@@ -181,7 +183,11 @@ export class Game extends DefaultScene {
   }
 
   // создаем двумерный массив врагов
-  createFirstWave() {
+  createWave() {
+    this.wave = new Wave(this, this.beetlemorph);
+    this.addChild(this.wave);
+    this.wave.nextWaveTrigger = false;
+
     for (let y = 0; y < this.enemyRows; y++) {
       for (let x = 0; x < this.enemyColumns; x++) {
         const enemyX = x * this.enemySize;
@@ -217,21 +223,6 @@ export class Game extends DefaultScene {
     }
   }
 
-  newWave() {
-    if (
-      Math.random() < 0.5 &&
-      this.enemyColumns * this.enemySize < SceneManager.app.canvas.width * 0.8
-    ) {
-      this.enemyColumns++;
-    } else if (
-      this.enemyRows * this.enemySize <
-      SceneManager.app.canvas.height * 0.6
-    ) {
-      this.enemyRows++;
-    }
-    this.wave.addChild(new Wave(this, this.beetlemorph));
-  }
-
   endGame = () => {
     this.gameOver = true;
     this.endGameModal = new EndGameModal(this);
@@ -242,6 +233,7 @@ export class Game extends DefaultScene {
 
   addBackground() {
     const backgroundSprite = new Sprite(this.background);
+    backgroundSprite.label = "background";
     this.addChild(backgroundSprite);
   }
 
